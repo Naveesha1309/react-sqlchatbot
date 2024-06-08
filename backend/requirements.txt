@@ -9,3 +9,7 @@ groq==0.4.2
 langchain-groq==0.0.1
 psycopg2-binary
 flask-cors
+#hugging face
+llama-cpp-python==0.2.11
+huggingface_hub==0.20.3
+

@@ -17,9 +17,16 @@ const ChatBot = ({ dbInfo }) => {
     setMessages((prevMessages) => [...prevMessages, { text: message, isUser: true }]);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/chatbot', { message, dbInfo });
+      const response = await axios.post('http://localhost:5000/api/chatbot', { message, dbInfo }, {
+      timeout: 20000 // Set timeout to 5 seconds // resolving ECONNRESET error and the RuntimeError
+    });
+      console.log("response:",response)
       const botResponse = response.data.response;
-      setMessages((prevMessages) => [...prevMessages, { text: botResponse, isUser: false }]);
+      const formattedBotResponse = botResponse.split('\n').map((line, index) => (
+        <div key={index}>{line}</div>
+      ));
+
+      setMessages((prevMessages) => [...prevMessages, { text: formattedBotResponse, isUser: false }]);
     } catch (error) {
       console.error('Error fetching bot response:', error); // Log detailed error information
       if (error.response) {
@@ -27,7 +34,7 @@ const ChatBot = ({ dbInfo }) => {
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
       }
-      setMessages((prevMessages) => [...prevMessages, { text: 'Please provide a question related to the database.', isUser: false }]);
+      setMessages((prevMessages) => [...prevMessages, { text: 'An error occurred, please try again.', isUser: false }]);
     } finally {
       setIsLoading(false);
     }
