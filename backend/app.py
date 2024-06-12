@@ -21,6 +21,11 @@ from sqlalchemy.exc import SQLAlchemyError
 
 load_dotenv()
 
+# langsmith
+import os
+os.environ["LANGCHAIN_API_KEY"]=os.getenv("LANGCHAIN_API_KEY")
+os.environ["LANGCHAIN_TRACING_V2"]="true"
+
 # def init_database(user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
 #     db_uri = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
 #     return SQLDatabase.from_uri(db_uri)
