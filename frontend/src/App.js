@@ -1,19 +1,23 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
+import Layout from './components/Layout';
+import View from './View';
 import { AuthProvider } from './components/AuthContext';
+import PrivateChatRoute from './components/PrivateChatRoute';
 
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route element={<PrivateChatRoute />}>
+                    <Route path="/chat" element={<Layout><View /></Layout>} />
+                </Route>
+          <Route path="/about" element={<Layout><About /></Layout>} />
         </Routes>
         </BrowserRouter>
       </AuthProvider>

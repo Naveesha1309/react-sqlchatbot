@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "groq": "^3.43.0",
+    "langchain-core": "^0.0.4"
+  }
+}

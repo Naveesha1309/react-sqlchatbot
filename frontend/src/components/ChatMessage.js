@@ -14,7 +14,7 @@ const ChatMessage = ({ message, isUser }) => {
           className="w-10 h-10 rounded-full"
         />
       </div>
-      <div className={`ml-3 p-2 rounded-lg ${isUser ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>{message}</div>
+      <div className={`ml-3 p-2 rounded-lg ${isUser ? 'bg-login-color' : 'bg-gray-200'}`}>{message}</div>
       {console.log("message from chatmessage", message)}
     </div>
         
