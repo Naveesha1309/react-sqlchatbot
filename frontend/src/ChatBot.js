@@ -5,7 +5,7 @@ import ChatMessage from './components/ChatMessage';
 
 const ChatBot = ({ dbInfo }) => {
   const [messages, setMessages] = useState([
-    { text: 'Hello! I\'m a SQL assistant. Ask me anything about your database.', isUser: false },
+    { text: 'Hello! I\'m a SQL assistant. Ask me anything about your database.', isUser: false,sql:null},
   ]);
   
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,7 @@ const ChatBot = ({ dbInfo }) => {
 
   const handleSendMessage = async (message) => {
     setIsLoading(true);
-    setMessages((prevMessages) => [...prevMessages, { text: message, isUser: true }]);
+    setMessages((prevMessages) => [...prevMessages, { text: message, isUser: true,sql:null}]);
 
     try {
       const response = await axios.post('http://localhost:5000/api/chatbot', { message, dbInfo }, {
@@ -22,11 +22,11 @@ const ChatBot = ({ dbInfo }) => {
     });
       console.log("response:",response)
       const botResponse = response.data.response;
+      const sqlquery = response.data.sql;
       const formattedBotResponse = botResponse.split('\n').map((line, index) => (
         <div key={index}>{line}</div>
       ));
-
-      setMessages((prevMessages) => [...prevMessages, { text: formattedBotResponse, isUser: false }]);
+      setMessages((prevMessages) => [...prevMessages, { text: formattedBotResponse, isUser: false,sql:sqlquery}]);
     } catch (error) {
       console.error('Error fetching bot response:', error); // Log detailed error information
       if (error.response) {
@@ -34,7 +34,7 @@ const ChatBot = ({ dbInfo }) => {
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
       }
-      setMessages((prevMessages) => [...prevMessages, { text: 'An error occurred, please try again.', isUser: false }]);
+      setMessages((prevMessages) => [...prevMessages, { text: 'An error occurred, please try again.', isUser: false,sql:"Error" }]);
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +56,8 @@ const ChatBot = ({ dbInfo }) => {
             key={index}
             message={message.text}
             isUser={message.isUser}
+            sql={message.sql}
+            showSQLButton={index !== 0 && !message.isUser}
           />
         ))}
       </div>

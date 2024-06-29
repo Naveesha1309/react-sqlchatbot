@@ -1,10 +1,13 @@
-import React from 'react';
+//////////////////////////////////////// SHOW SQL BUTTON //////////////////////////////////////
+import React,{useState} from 'react';
 
+const ChatMessage = ({ message, isUser, sql, showSQLButton  }) => {
+  const [showSQL, setShowSQL] = useState(false);
 
+  const toggleSQL = () => {
+    setShowSQL(!showSQL);
+  };
 
-const ChatMessage = ({ message, isUser }) => {
-
-  
   return (
     <div className={`flex items-start mb-4 ${isUser ? 'flex-row-reverse' : ''}`}>
       <div className="flex-shrink-0">
@@ -14,13 +17,28 @@ const ChatMessage = ({ message, isUser }) => {
           className="w-10 h-10 rounded-full"
         />
       </div>
-      <div className={`ml-3 p-2 rounded-lg ${isUser ? 'bg-login-color' : 'bg-gray-200'}`}>{message}</div>
+      <div className={`ml-3 p-2 rounded-lg ${isUser ? 'bg-login-color' : 'bg-gray-200'}`}>
+        {message}
+        {!isUser && showSQLButton &&(
+          <div>
+            <button 
+              onClick={toggleSQL} 
+              className="mt-2 p-1 bg-blue-500 text-white rounded"
+            >
+              {showSQL ? 'Hide SQL' : 'Show SQL'}
+            </button>
+            {showSQL && (
+              <div className="mt-2 p-2 bg-gray-100 rounded">
+                <pre>{sql}</pre>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
       {console.log("message from chatmessage", message)}
     </div>
-        
-        
-   
   );
 };
+
 
 export default ChatMessage;
